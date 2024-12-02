@@ -1,9 +1,9 @@
 import tkinter as tk
 import random as rd
 
-#Hide for testing
-"""
+#Class for getting a random restaurant
 class ChooseRestaurant:
+    #Initialize restaurant dictionaries
     def __init__(self, low, medium, high):
         self.low = low
         self.medium = medium
@@ -19,22 +19,46 @@ class ChooseRestaurant:
     def high_price_chosen(self):
         random_rest = rd.choice(list(self.high.keys()))
         return random_rest
-"""
 
+class FetchImage:
+    def __init__(self, random_rest, low, medium, high):
+        self.random_rest = random_rest
+        self.low = low
+        self.medium = medium
+        self.high = high
+
+    # Get image from low price list
+    def fetch_low_image(self, random_rest, low):
+        chosen_image = self.low.get(random_rest)
+        return chosen_image
+
+    # Get image from medium price list
+    def fetch_medium_image(self, random_rest, medium):
+        chosen_image = self.medium.get(random_rest)
+        return chosen_image
+
+    # Get image from high price list
+    def fetch_high_image(self, random_rest, high):
+        chosen_image = self.high.get(random_rest)
+        return chosen_image
+
+#Class for handling our application
 class Application:
+
     #Initialize root and welcome screen
     def __init__(self, root):
         self.root = root
-        #Hide for testing. self.images = self.initialize_images()
-        #Hide for testing. self.low_price, self.medium_price, self.high_price = self.initialize_dict(self.images)
+        self.images = self.initialize_images()
+        self.low_price, self.medium_price, self.high_price = self.initialize_dict(self.images)
         self.welcome_screen()
 
-    #Hide this for testing
-    """
+    #Initialize images
     def initialize_images(self):
         '''Read in all images'''
+        #Initialize empty dictionary
         images = {}
         try:
+                #Key is "restaurant_image" and value is the image read in
                 images["great_divide_image"] = tk.PhotoImage(file="great_divide_image.png")
                 images["john_stew_image"] = tk.PhotoImage(file="john_stew_image.png")
                 images["la_eskina_image"] = tk.PhotoImage(file="la_eskina.png")
@@ -65,11 +89,14 @@ class Application:
                 images["ocean_prime_image"] = tk.PhotoImage(file="ocean_prime_image.png")
                 images["union_fifty_image"] = tk.PhotoImage(file="union_fifty_image.png")
                 images["mesh_image"] = tk.PhotoImage(file="mesh_image.png")
+        #Handle errors for missing images
         except tk.TclError as e:
             print(f"Error loading images {e}")
         return images
+
+    #Initialize dictionaries for price tiers
     def initialize_dict(self, images):
-        '''Initialize dictionaries key being the restaurant name and image being the value'''
+        '''Initialize dictionaries key being the restaurant name and get image being the value'''
         low_price = {
             "The Great Divide": images.get("great_divide_image"),
             "John’s Famous Stew": images.get("john_stew_image"),
@@ -109,64 +136,65 @@ class Application:
             "Mesh": images.get("mesh_image")
         }
         return low_price, medium_price, high_price
-        
-    #Get image from low price list
-    def fetch_low_image(self, random_rest):
-        chosen_image = self.low_price.get(random_rest)
-        return chosen_image
 
-    # Get image from medium price list
-    def fetch_medium_image(self, random_rest):
-        chosen_image = self.medium_price.get(random_rest)
-        return chosen_image
 
-    # Get image from high price list
-    def fetch_high_image(self, random_rest):
-        chosen_image = self.high_price.get(random_rest)
-        return chosen_image
-    """
     def welcome_screen(self):
         # Making widgets
-        welcome_title = tk.Label(self.root, text = 'Having trouble deciding on a restaurant?', font = ("Arial", 20, "bold"), bg = "dodger blue", fg = "white")
+        self.welcome_title = tk.Label(self.root, text = 'Having trouble deciding on a restaurant?', font = ("Arial", 20, "bold"))
 
         #Start button with anon function that calls on_start function and passes dictionaries
-        start_button = tk.Button(self.root, text="Start!", font = ("Arial", 20, "bold"), bg = "white", fg = "dodger blue", command = self.on_start, width = 10, height = 2)
+        self.start_button = tk.Button(self.root, text="Start!", font = ("Arial", 20, "bold"), bg = "dodger blue", fg = "white", command = self.on_start, width = 10, height = 2)
 
         #Arranging widgets
-        welcome_title.grid(row = 0, column = 0, columnspan = 2, pady = 50, padx = 25)
-        start_button.grid(row = 2, column = 0, columnspan = 2, pady = 100, padx = 15)
+        self.welcome_title.place(relx = .5, rely = .25, anchor = "center")
+        self.start_button.place(relx = .5, rely = .5, anchor = "center")
 
     def on_start(self):
-        print("Start Clicked")
-        #Need to work on the widgets and logic for the start window.
-        """
+        #Delete widgets
+        self.welcome_title.destroy()
+        self.start_button.destroy()
+        self.welcome_title.destroy()
+        self.start_button.destroy()
+
         #Initialize Choose_rest
         rest_picker = ChooseRestaurant(self.low_price, self.medium_price, self.high_price)
+
         #Add widgets
-        start_title = tk.Label(self.root, text = 'Indianapolis restaurant chooser', font = "Arial Rounded MT Bold", bg = "dodger blue", fg = "white")
+        start_title = tk.Label(self.root, text = 'Choose a price tier', font = "Arial 16 bold", width = 20, height = 2)
         low_price_button = tk.Button(
             self.root,
+            font="Arial 16 bold",
             text = "$",
+            bg="dodger blue", fg="white",
+            width = 10, height = 2,
             command=lambda: self.handle_restaurant_and_image(rest_picker.low_price_chosen(),"low")
         )
         medium_price_button = tk.Button(
             self.root,
+            font = "Arial 16 bold",
             text="$$",
+            bg="dodger blue", fg="white",
+            width = 10, height = 2,
             command=lambda: self.handle_restaurant_and_image(rest_picker.medium_price_chosen(),"low")
         )
         high_price_button = tk.Button(
             self.root,
+            font="Arial 16 bold",
             text="$$$",
+            bg="dodger blue", fg="white",
+            width = 10, height = 2,
             command=lambda: self.handle_restaurant_and_image(rest_picker.high_price_chosen(),"high")
         )
 
         #Arrange widgets
-        start_title.grid(column = 2, row = 2)
-
+        start_title.place(relx = .5, rely = .15, anchor = "center")
+        low_price_button.place(relx = .5, rely = .4, anchor = "center")
+        medium_price_button.place(relx = .5, rely = .6, anchor = "center")
+        high_price_button.place(relx = .5, rely = .8, anchor = "center")
 
     def handle_restaurant_and_image(self, chosen_image, price_tier):
         pass
-    """
+
 def main():
     # Initialize root
     root = tk.Tk()
@@ -181,7 +209,11 @@ def main():
     background_label = tk.Label(root, image = background_image)
     background_label.place(x = 0, y = 0, relwidth = 1, relheight = 1)
     root.background_image = background_image
+
+    #Initialize Application with root as parameter
     app = Application(root)
+
+    #Executes our program and waits for clicks
     root.mainloop()
 
 
