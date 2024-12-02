@@ -27,18 +27,21 @@ class FetchImage:
         self.medium = medium
         self.high = high
 
-    # Get image from low price list
+
     def fetch_low_image(self, random_rest, low):
+        """Get image from low price list"""
         chosen_image = self.low.get(random_rest)
         return chosen_image
 
-    # Get image from medium price list
+
     def fetch_medium_image(self, random_rest, medium):
+        """Get image from medium price list"""
         chosen_image = self.medium.get(random_rest)
         return chosen_image
 
-    # Get image from high price list
+
     def fetch_high_image(self, random_rest, high):
+        """Get image from high price list"""
         chosen_image = self.high.get(random_rest)
         return chosen_image
 
@@ -139,6 +142,7 @@ class Application:
 
 
     def welcome_screen(self):
+        """Display welcome screen"""
         # Making widgets
         self.welcome_title = tk.Label(self.root, text = 'Having trouble deciding on a restaurant?', font = ("Arial", 20, "bold"))
 
@@ -150,6 +154,7 @@ class Application:
         self.start_button.place(relx = .5, rely = .5, anchor = "center")
 
     def on_start(self):
+        """Runs once start is clicked. This screen displays price tiers."""
         #Delete widgets
         self.welcome_title.destroy()
         self.start_button.destroy()
@@ -192,10 +197,12 @@ class Application:
         medium_price_button.place(relx = .5, rely = .6, anchor = "center")
         high_price_button.place(relx = .5, rely = .8, anchor = "center")
 
-    def handle_restaurant_and_image(self, chosen_image, price_tier):
+    def handle_restaurant_and_image(self, chosen_restaurant, price_tier):
+        """Gets image and restaurant name """
         pass
 
 def main():
+    """Main function"""
     # Initialize root
     root = tk.Tk()
 
