@@ -93,8 +93,8 @@ class Application:
                 images["union_fifty_image"] = tk.PhotoImage(file="union_fifty_image.png")
                 images["mesh_image"] = tk.PhotoImage(file="mesh_image.png")
         #Handle errors for missing images
-        except tk.TclError as e:
-            print(f"Error loading images {e}")
+        except tk.TclError as error:
+            print(f"Error loading images {error}")
         return images
 
     #Initialize dictionaries for price tiers
